@@ -15,3 +15,4 @@ vsim.wlf
 transcript
 modelsim.ini
 test/tb_dsp_fir.v.bak
+src/test.v
