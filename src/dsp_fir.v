@@ -17,6 +17,16 @@ module dsp_fir(
     reg signed [7:0] fir_coeff [0:7];
     reg signed [7:0] data_pipeline[0:7]; //input data shift register
 
+    reg signed [7:0] data_pipeline_split [0:3];
+    reg signed [7:0] fir_coefficient_split [0:3];
+    reg [18:0] carry_over;
+    reg [18:0] result_adder_q; 
+    wire [18:0] result_adder_d;
+
+    reg output_valid;
+
+    wire [15:0] result_partial [0:3];
+
     integer  i;
 
     always @(posedge clk) begin
@@ -26,7 +36,7 @@ module dsp_fir(
 
             for(i=0; i<8; i=i+1) begin
                 fir_coeff[i] <= 8'b0;
-                data_pipeline[i] <= 8'sd0;
+                data_pipeline[i] <= 8'd0;
             end
         end
         else begin
@@ -60,15 +70,6 @@ module dsp_fir(
             end
         end 
     end
-
-    reg signed [7:0] data_pipeline_split [0:3];
-    reg signed [7:0] fir_coefficient_split [0:3];
-    reg [18:0] carry_over;
-    reg [18:0] result_adder_q, result_adder_d;
-
-    reg output_valid;
-
-    wire [15:0] result_partial [0:3];
 
     // Combinational logics
     always @(*) begin
