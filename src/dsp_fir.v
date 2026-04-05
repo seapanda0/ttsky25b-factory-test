@@ -17,7 +17,7 @@ module dsp_fir (
     localparam M2 = 2'd2;
     localparam M3 = 2'd3;
 
-    assign clk_adc = (phase == M0 || phase == M1) ? 1'b1 : 1'b0;
+    assign clk_adc = (phase == M1 || phase == M2) ? 1'b1 : 1'b0;
     assign clk_dac = ~clk_adc;
 
     reg signed [7:0]  fir_coeff [0:7];
@@ -32,14 +32,22 @@ module dsp_fir (
     // Combinational logics
     always @(*) begin
         case (phase)
-            M0: begin mux_d[0] = data_in_s;    mux_c[0] = fir_coeff[0]; 
-                         mux_d[1] = data_pipe[0]; mux_c[1] = fir_coeff[1]; end
-            M1: begin mux_d[0] = data_pipe[1]; mux_c[0] = fir_coeff[2]; 
-                         mux_d[1] = data_pipe[2]; mux_c[1] = fir_coeff[3]; end
-            M2: begin mux_d[0] = data_pipe[3]; mux_c[0] = fir_coeff[4]; 
-                         mux_d[1] = data_pipe[4]; mux_c[1] = fir_coeff[5]; end
-            M3: begin mux_d[0] = data_pipe[5]; mux_c[0] = fir_coeff[6]; 
-                         mux_d[1] = data_pipe[6]; mux_c[1] = fir_coeff[7]; end
+            M0: begin 
+                mux_d[0] = data_pipe[0]; mux_c[0] = fir_coeff[0]; 
+                mux_d[1] = data_pipe[1]; mux_c[1] = fir_coeff[1];
+            end
+            M1: begin 
+                mux_d[0] = data_pipe[2]; mux_c[0] = fir_coeff[2]; 
+                mux_d[1] = data_pipe[3]; mux_c[1] = fir_coeff[3];
+            end
+            M2: begin
+                mux_d[0] = data_pipe[4]; mux_c[0] = fir_coeff[4]; 
+                mux_d[1] = data_pipe[5]; mux_c[1] = fir_coeff[5];
+            end
+            M3: begin
+                mux_d[0] = data_pipe[6]; mux_c[0] = fir_coeff[6]; 
+                mux_d[1] = data_pipe[7]; mux_c[1] = fir_coeff[7];
+            end
         endcase
     end
 
@@ -77,10 +85,17 @@ module dsp_fir (
             else 
                 acc <= next_acc;
             
-            if (phase == 2'b11) begin
+            if (phase == M3) begin
                 result_reg <= {~next_acc[14], next_acc[13:7]};
-                for (i=7; i>0; i=i-1) data_pipe[i] <= data_pipe[i-1];
                 data_pipe[0] <= data_in_s;
+                data_pipe[1] <= data_pipe[0];
+                data_pipe[2] <= data_pipe[1];
+                data_pipe[3] <= data_pipe[2];
+                data_pipe[4] <= data_pipe[3];
+                data_pipe[5] <= data_pipe[4];
+                data_pipe[6] <= data_pipe[5];
+                data_pipe[7] <= data_pipe[6];
+
             end
         end
     end
