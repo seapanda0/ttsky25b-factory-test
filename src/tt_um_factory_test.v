@@ -14,13 +14,31 @@ module tt_um_factory_test (
   dsp_fir m1 (
     .data_in(ui_in),
     .data_out(uo_out),
-    .mode(uio_in[0]),
+    .clk_dac(uio_out[1]),
+    .clk_adc(uio_out[0]),
+    .mode(uio_in[2]),
     .clk(clk),
     .rst_n(rst_n)
   );
   // avoid linter warning about unused pins:
-  wire _unused_pins = &{ena, uio_out, uio_oe, uio_in[7:1],1'b0};
-  assign uio_out = 8'b0;
-  assign uio_oe  = 8'b0;
+  wire _unused_pins = &{ena, uio_out[7:2], uio_oe[7:2], uio_in[7:1],1'b0};
+  
+  // Tie unused outputs to 0
+  assign uio_out[2] = 1'b0;
+  assign uio_out[3] = 1'b0;
+  assign uio_out[4] = 1'b0;
+  assign uio_out[5] = 1'b0;
+  assign uio_out[6] = 1'b0;
+  assign uio_out[7] = 1'b0;
+  
+  // IO 1 and 2 is ADC CLK
+  assign uio_oe[0]  = 1'b1;
+  assign uio_oe[1]  = 1'b1;
+  assign uio_oe[2]  = 1'b0;
+  assign uio_oe[3]  = 1'b0;
+  assign uio_oe[4]  = 1'b0;
+  assign uio_oe[5]  = 1'b0;
+  assign uio_oe[6]  = 1'b0;
+  assign uio_oe[7]  = 1'b0;
 
 endmodule  // tt_um_factory_test
