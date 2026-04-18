@@ -8,14 +8,14 @@ This is a Digital Signal Processor implemented using a 8-bit, 8-taps  Finite Imp
 - Initially targeting the Sky130 PDK, however this project couldn't be delivered in time for the TTSKY26a Shuttle.
 - A separate repo for the TTGF26a Shuttle targeting the GlobalFoundries 180nm PDK is in the works.
 
-## Related repos
+## Related Repositories
 - [dsp_fir_tapeout](https://github.com/seapanda0/dsp_fir_tapeout) - Tapeout ready repo for TTSKY26a shuttle.
 - [simulation_dsp_fir](https://github.com/seapanda0/simulation_dsp_fir) - Simulate FIR filter and generate coefficients.
 - [stm_dsp_fir](https://github.com/seapanda0/stm_dsp_fir) - Software implementation of the FIR filter with STM32F401 Microcontroller.
 - [dsp_fir_fpga](https://github.com/seapanda0/stm_dsp_fir) - Hardware implementation on DE2i-150 Cyclone IV FPGA Board.
 - [adc08100_sim](https://github.com/seapanda0/adc08100_sim) - Simulate the behaviour of ADC08100 IC using a STM32F401 (works fine at low speeds).
 
-## How to test
+## How to Test
 
 This project has been verified using an FPGA. An external ADC and DAC IC with 8 bit parallel interface is needed. A microcontroller is also needed to load the coefficients before starting the filter operation.
 
